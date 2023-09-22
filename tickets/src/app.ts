@@ -1,15 +1,12 @@
-import dotenv from "dotenv";
+// import dotenv from "dotenv";
 import express from "express";
 // import "express-async-errors";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { currentUserRouter } from "./routes/current-user";
-import { signinRouter } from "./routes/signin";
-import { signoutRouter } from "./routes/signout";
-import { signupRouter } from "./routes/signup";
 import { errorController } from "./controllers/errorController";
+import AppError from "./errors/appErrors";
 
-dotenv.config();
+// dotenv.config();
 
 const app = express();
 
@@ -28,10 +25,9 @@ app.use(express.json());
 app.use(cookieParser());
 
 /* Routes */
-app.use(currentUserRouter);
-app.use(signinRouter);
-app.use(signoutRouter);
-app.use(signupRouter);
+app.all("*", async (req, res, next) => {
+  next(new AppError("No Route Found", 404));
+});
 
 app.use(errorController);
 

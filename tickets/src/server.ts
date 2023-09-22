@@ -1,8 +1,8 @@
-import dotenv from "dotenv";
+// import dotenv from "dotenv";
 import mongoose from "mongoose";
 import app from "./app";
 
-dotenv.config();
+// dotenv.config();
 
 // process.on("uncaughtException", (err) => {
 //   console.log(err.name, err.message);
