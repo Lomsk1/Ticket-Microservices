@@ -23,7 +23,7 @@ router.post(
     const user = User.build({ email, password });
     await user.save();
 
-    createSendToken(user, 200, res, req);
+    createSendToken(user, 201, res, req);
   }
 );
 

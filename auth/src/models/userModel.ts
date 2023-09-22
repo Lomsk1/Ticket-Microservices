@@ -35,11 +35,11 @@ const userSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
       validate: [validator.isEmail, "Please, enter a valid email"],
-      minlength: 8,
     },
     password: {
       type: String,
       required: true,
+      minlength: 8,
     },
   },
   {
