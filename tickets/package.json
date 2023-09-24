@@ -2,7 +2,7 @@
   "name": "tickets",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.ts",
   "scripts": {
     "start": "ts-node-dev --poll src/server.ts",
     "test": "jest --watchAll --no-cache"

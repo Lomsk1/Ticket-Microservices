@@ -5,6 +5,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { errorController } from "./controllers/errorController";
 import AppError from "./errors/appErrors";
+import { createTicketRouter } from "./routes/new";
 
 // dotenv.config();
 
@@ -25,9 +26,10 @@ app.use(express.json());
 app.use(cookieParser());
 
 /* Routes */
-app.all("*", async (req, res, next) => {
-  next(new AppError("No Route Found", 404));
-});
+// app.all("*", async (req, res, next) => {
+//   next(new AppError("No Route Found", 404));
+// });
+app.use(createTicketRouter);
 
 app.use(errorController);
 

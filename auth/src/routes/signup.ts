@@ -1,9 +1,9 @@
+import { createSendToken } from './../middlewares/jwt_token';
 import express, { NextFunction, Request, Response } from "express";
 import { User } from "../models/userModel";
 import AppError from "../errors/appErrors";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { createSendToken } from "../middlewares/jwt_token";
 
 dotenv.config();
 

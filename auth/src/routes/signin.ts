@@ -1,8 +1,8 @@
+import { createSendToken } from "../middlewares/jwt_token";
 import jwt from "jsonwebtoken";
 import express, { NextFunction, Request, Response } from "express";
 import AppError from "../errors/appErrors";
 import { User, UserDoc } from "../models/userModel";
-import { createSendToken } from "../middlewares/jwt_token";
 
 const router = express.Router();
 
