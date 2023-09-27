@@ -6,6 +6,8 @@ import cookieParser from "cookie-parser";
 import { errorController } from "./controllers/errorController";
 import AppError from "./errors/appErrors";
 import { createTicketRouter } from "./routes/new";
+import { showTicketRouter } from "./routes/show";
+import { indexTicketRouter } from "./routes";
 
 // dotenv.config();
 
@@ -30,6 +32,8 @@ app.use(cookieParser());
 //   next(new AppError("No Route Found", 404));
 // });
 app.use(createTicketRouter);
+app.use(showTicketRouter);
+app.use(indexTicketRouter);
 
 app.use(errorController);
 

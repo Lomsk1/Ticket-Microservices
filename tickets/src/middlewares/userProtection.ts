@@ -3,15 +3,20 @@ import { promisify } from "util";
 import { NextFunction, Request, Response } from "express";
 import { catchAsync } from "../utils/catchAsync";
 import AppError from "../errors/appErrors";
-// import { User, UserDoc } from "../models/userModel";
+// import { User } from "../models/userModel";
 
-// declare global {
-//   namespace Express {
-//     interface Request {
-//       user: UserDoc;
-//     }
-//   }
-// }
+interface UserPayload {
+  id: string;
+  email: string;
+}
+
+declare global {
+  namespace Express {
+    interface Request {
+      user: UserPayload;
+    }
+  }
+}
 
 export const protect = catchAsync(
   async (req: Request, _res: Response, next: NextFunction) => {
@@ -33,9 +38,14 @@ export const protect = catchAsync(
 
     /* 2) Verification token */
 
-    const verify = promisify<string, string>(jwt.verify);
+    // const verify = promisify<string, string>(jwt.verify);
 
-    const decoded: any = await verify(token, process.env.JWT_KEY!);
+    const decoded: any = jwt.verify(token, process.env.JWT_KEY!) as UserPayload;
+
+    // const payload = jwt.verify(
+    //   req.session.jwt,
+    //   process.env.JWT_KEY!
+    // ) as UserPayload;
 
     /* 3) Check if user still exist */
     // const currentUser = await User.findById(decoded.id);
@@ -56,7 +66,7 @@ export const protect = catchAsync(
     // }
 
     /* GRANT ACCESS TO PROTECTED ROUTE */
-    // req.user = currentUser;
+    req.user = decoded;
     next();
   }
 );

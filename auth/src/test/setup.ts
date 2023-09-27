@@ -4,6 +4,7 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import app from "../app";
 import request from "supertest";
+import jwt from "jsonwebtoken";
 
 // declare global {
 //   namespace NodeJS {
@@ -12,6 +13,7 @@ import request from "supertest";
 //     }
 //   }
 // }
+
 declare global {
   function signin(): Promise<string[]>;
 }
@@ -60,3 +62,4 @@ global.signin = async () => {
 
   return cookie;
 };
+
