@@ -2,8 +2,8 @@ import express, { Request, Response, NextFunction } from "express";
 import Ticket from "../models/ticketModel";
 import AppError from "../errors/appErrors";
 import { protect } from "../middlewares/userProtection";
-import { TicketCreatedPublisher } from "../events/publishers/ticket-updated-publisher";
 import { natsWrapper } from "../nats-wrapper";
+import { TicketCreatedPublisher } from "../events/publishers/ticket-created-publisher";
 
 const router = express.Router();
 
@@ -15,6 +15,10 @@ router.patch(
 
     if (!ticket) {
       return next(new AppError("No Ticket found with this ID", 404));
+    }
+
+    if (ticket.orderId) {
+      throw new Error("Cannot edit a reserved ticket");
     }
 
     if (ticket.userId !== req.user.id) {
@@ -32,6 +36,7 @@ router.patch(
       title: ticket.title,
       price: ticket.price,
       userId: ticket.userId,
+      version: ticket.version,
     });
 
     res.status(200).json({
