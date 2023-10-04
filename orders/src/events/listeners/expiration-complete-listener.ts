@@ -1,20 +1,24 @@
-import { Message } from 'node-nats-streaming';
-import { queueGroupName } from './queue-group-name';
-import { Order, OrderStatus } from '../../models/order';
-import { OrderCancelledPublisher } from '../publishers/order-cancelled-publisher';
-import { ExpirationCompleteEvent } from '../expiration-complete-event';
-import { Subjects } from '../subjects';
-import Listener from '../base-listener';
+import { Message } from "node-nats-streaming";
+import { queueGroupName } from "./queue-group-name";
+import { Order, OrderStatus } from "../../models/order";
+import { OrderCancelledPublisher } from "../publishers/order-cancelled-publisher";
+import { ExpirationCompleteEvent } from "../expiration-complete-event";
+import { Subjects } from "../subjects";
+import Listener from "../base-listener";
 
 export class ExpirationCompleteListener extends Listener<ExpirationCompleteEvent> {
   queueGroupName = queueGroupName;
   subject: Subjects.ExpirationComplete = Subjects.ExpirationComplete;
 
-  async onMessage(data: ExpirationCompleteEvent['data'], msg: Message) {
-    const order = await Order.findById(data.orderId).populate('ticket');
+  async onMessage(data: ExpirationCompleteEvent["data"], msg: Message) {
+    const order = await Order.findById(data.orderId).populate("ticket");
 
     if (!order) {
-      throw new Error('Order not found');
+      throw new Error("Order not found");
+    }
+
+    if (order.status === OrderStatus.Complete) {
+      return msg.ack();
     }
 
     order.set({
